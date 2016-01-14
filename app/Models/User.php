@@ -23,8 +23,11 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
      *
      * @var array
      */
+
+    protected $table = 'jugadores';
+
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'confirmed', 'confirmation_token'
+        'nombres', 'apellidos', 'email', 'id_posicion', 'id_ciudad', 'f_nacimiento'
     ];
 
     /**
@@ -42,9 +45,14 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
 
 
 
-    public function profile()
+    public function posicion()
     {
-      return $this->hasOne('App\Models\Profile');
+      return $this->BelongsTo('App\Models\Posiciones', 'id_posicion', 'id_posicion');
+    }
+
+    public function ciudad()
+    {
+      return $this->BelongsTo('App\Models\Ciudades', 'id_ciudad', 'id_ciudad');
     }
 
 
