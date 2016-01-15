@@ -28,3 +28,16 @@ Route::get('/', function () {
 
 Route::resource('registration', 'RegistrationController', ['only' => ['store']]);
 Route::resource('authentication', 'AuthenticateController', ['only' => ['store']]);
+Route::group([
+    'middleware' => [
+      //'jwt.refresh',
+      'jwt.auth'
+      //'permissions'
+    ]], function(){
+
+    Route::resource('jugadores', 'JugadoresController', ['only' => ['show','update']]);
+   
+    
+
+  });
+
