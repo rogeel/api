@@ -26,6 +26,5 @@ Route::get('/', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-    //
-});
+Route::resource('registration', 'RegistrationController', ['only' => ['store']]);
+Route::resource('authentication', 'AuthenticateController', ['only' => ['store']]);

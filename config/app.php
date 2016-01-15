@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,6 +163,12 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
 
+        /**
+         * Quepartido service providers
+         */
+        App\Providers\RepositoriesServiceProvider::class,
+        App\Services\AuthenticationManagement\AuthenticationManagementServiceProvider::class,
+
     ],
 
     /*
@@ -211,7 +217,8 @@ return [
 
         //Application aliases
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'AuthenticationManagement' => App\Facade\AuthenticationManagementFacade::class,
 
     ],
 

@@ -26,8 +26,10 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
 
     protected $table = 'jugadores';
 
+    protected $primaryKey = "id_jugador";
+
     protected $fillable = [
-        'nombres', 'apellidos', 'email', 'id_posicion', 'id_ciudad', 'f_nacimiento'
+        'nombres', 'apellidos', 'email', 'id_posicion', 'id_ciudad', 'f_nacimiento', 'zona', 'password', 'descripcion', 'logros', 'fuerza', 'defensa', 'resistencia', 'tecnica','ataque','remember_token','token_facebook','movil','confirmed', 'confirmation_code','app'
     ];
 
     /**
@@ -39,7 +41,6 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
         'password'
     ];
 
-    protected $dates = ['deleted_at'];
 
 
 
@@ -55,13 +56,18 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
       return $this->BelongsTo('App\Models\Ciudades', 'id_ciudad', 'id_ciudad');
     }
 
+    public function zona()
+    {
+      return $this->BelongsTo('App\Models\Zonas', 'zona', 'id_zona');
+    }
+
 
   /**
    * Returns the complete name of the user
    * @return String Contains the first_name and last_name of the user
    */
     public function full_name(){
-      return $this->first_name." ".$this->last_name;
+      return $this->nombres." ".$this->apellidos;
     }
 
 }

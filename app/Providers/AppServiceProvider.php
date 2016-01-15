@@ -24,5 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->bind('App\Services\TransactionalMailer', 'App\Services\TransactionalSMTPMailer');
+        
     }
 }
