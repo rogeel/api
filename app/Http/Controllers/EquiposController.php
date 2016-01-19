@@ -9,7 +9,7 @@ use App\Repositories\JugadoresEquiposRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Libraries\Helper\ResponseMessage as ResponseMessage;
 
-class EquipoController extends Controller
+class EquiposController extends Controller
 {
     //
 
@@ -28,7 +28,7 @@ class EquipoController extends Controller
      */
     public function index()
     {
-      
+        return response()->json($this->equiposRepository->all());      
     }
 
     /**
@@ -36,7 +36,47 @@ class EquipoController extends Controller
      * @return void
      */
     public function store(Request $request) {
-        return response()->json($this->equiposRepository->all());
+        $equipo_data = $request->all();
+        \JWTAuth::parseToken();
+        $user = \JWTAuth::parseToken()->authenticate();
+        $equipo = NULL;
+        $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
+            'id_jugador'=>$user->id_jugador,
+            'capitan'=>'t'
+        ]);
+        if(count($equiposCapitan)>0){
+             return ResponseMessage::notAllowedTeams();
+        }
+        
+        try{
+
+          $equipo = $this->equiposRepository->create($equipo_data);
+          $arrayEquipoJugador = array('id_jugador' => $user->id_jugador,'id_equipo'=>$equipo["data"]["id"],'id_posicion'=>$user->id_posicion,'capitan'=>'t' , 'titular' => 't');
+          $this->JugadoresEquiposRepository->create($arrayEquipoJugador);
+
+          /*$file = $request->file("foto");
+
+
+          if(!empty($file)){
+                $file->move("images/jugadores/",$equipo->id_equipo.".jpg");
+          }else{
+
+                copy("/filesHtml/quepartido1/public/images/equipos/0.jpg","/filesHtml/quepartido1/public/images/equipos/".$equipo->id_equipo.".jpg");
+            
+          }*/
+
+         return response()->json($equipo);
+
+        }catch (\Exception $e) {
+          if ($e instanceof ValidatorException) {
+            return response()->json($e->toArray(), 400);
+
+          } else {
+            if ($user instanceof \App\Models\Equipos) $equipo->forceDelete();
+            return response()->json($e->getMessage(), 500);
+
+          }
+        }
     }
 
     /**

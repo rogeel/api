@@ -33,21 +33,25 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
           'min:8',
           'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'
         ],
-        'id_posicion' => 'required',
-        'id_ciudad' => 'required',
+        'id_posicion' => 'required|exists:posiciones,id_posicion',
+        'id_ciudad' => 'required|exists:ciudades,id_ciudad',
         'f_nacimiento' => 'required|date',
-        'sexo' => 'required',
-        'zona' => 'required',
+        'sexo' => 'required|in:m,f',
+        'zona' => 'required|exists:zonas,id_zona',
         'movil' => 'required'
       ], ValidatorInterface::RULE_UPDATE => [
         'nombres' => 'required|max:50',
         'apellidos'  => 'required|max:50',
         'email' => 'required|email|unique:jugadores,email,NULL,id_jugador',
-        'id_posicion' => 'required',
-        'id_ciudad' => 'required',
+        'password' => [
+          'min:8',
+          'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'
+        ],
+        'id_posicion' => 'required|exists:posiciones,id_posicion',
+        'id_ciudad' => 'required|exists:ciudades,id_ciudad',
         'f_nacimiento' => 'required|date',
-        'sexo' => 'required',
-        'zona' => 'required',
+        'sexo' => 'required|in:m,f',
+        'zona' => 'required|exists:zonas,id_zona',
         'movil' => 'required'
       ]
     ];

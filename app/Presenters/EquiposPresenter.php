@@ -2,15 +2,15 @@
 
 namespace App\Presenters;
 
-use App\Transformers\CountryTransformer;
+use App\Transformers\EquiposTransformer;
 use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
- * Class CountryPresenter
+ * Class EquiposPresenter
  *
  * @package namespace App\Presenters;
  */
-class CountryPresenter extends FractalPresenter
+class EquiposPresenter extends FractalPresenter
 {
     /**
      * Transformer
@@ -19,6 +19,6 @@ class CountryPresenter extends FractalPresenter
      */
     public function getTransformer()
     {
-        return new CountryTransformer();
+        return new EquiposTransformer();
     }
 }

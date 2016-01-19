@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\LanguagesRepository;
-use App\Models\Language;
+use App\Repositories\PosicionesRepository;
+use App\Models\Posiciones;
 
 /**
- * Class LanguagesRepositoryEloquent
+ * Class PosicionesRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class LanguagesRepositoryEloquent extends BaseRepository implements LanguagesRepository
+class PosicionesRepositoryEloquent extends BaseRepository implements PosicionesRepository
 {
     /**
      * Specify Model class name
@@ -20,7 +20,7 @@ class LanguagesRepositoryEloquent extends BaseRepository implements LanguagesRep
      */
     public function model()
     {
-        return Language::class;
+        return Posiciones::class;
     }
 
     /**
@@ -31,12 +31,8 @@ class LanguagesRepositoryEloquent extends BaseRepository implements LanguagesRep
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    /**
-     * Presenter for the Languages repository
-     * @return [type] [description]
-     */
     public function presenter()
     {
-        return "App\\Presenters\\LanguagesPresenter";
+        return "App\\Presenters\\PosicionesPresenter";
     }
 }

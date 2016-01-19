@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\CountryRepository;
-use App\Models\Country;
+use App\Repositories\CiudadesRepository;
+use App\Models\Ciudades;
 
 /**
- * Class CountryRepositoryEloquent
+ * Class CiudadesRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class CountryRepositoryEloquent extends BaseRepository implements CountryRepository
+class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepository
 {
     /**
      * Specify Model class name
@@ -20,7 +20,7 @@ class CountryRepositoryEloquent extends BaseRepository implements CountryReposit
      */
     public function model()
     {
-        return Country::class;
+        return Ciudades::class;
     }
 
     /**
@@ -31,12 +31,8 @@ class CountryRepositoryEloquent extends BaseRepository implements CountryReposit
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    /**
-     * Presents the model to the view
-     * @return CountryPresenter fractal instance that parses the model
-     */
-    public function presenter()
+     public function presenter()
     {
-        return "App\\Presenters\\CountryPresenter";
+        return "App\\Presenters\\CiudadesPresenter";
     }
 }

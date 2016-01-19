@@ -84,30 +84,5 @@ class RegistrationController extends Controller
    * @param  Request $request request
    * @return JSON           status of the verification
    */
-  public function confirmate(Request $request) {
-      $confirmation_data = json_decode($request->getContent(), true);
-      //Avoid attacks with other data that the one that is actually required
-      $users = $this->usersRepo->findWhere([
-        'confirmation_token' => $confirmation_data['confirmation_token']
-      ],
-      ['id']);
-
-      if (!empty($users['data']) && count($users['data']) == 1) {
-        $user_id = $users['data'][0]['id'];
-        $user =  $this->usersRepo
-                      ->removeConfirmationToken($user_id);
-        return response()->json([
-            "message" => "confirmation completed",
-            "data" => $user['data']
-        ]);
-
-      } else {
-        return response()->json(
-          ["message" => "invalid confirmation token"],
-          400
-        );
-
-      }
-
-  }
+ 
 }

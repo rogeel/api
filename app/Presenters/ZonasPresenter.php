@@ -2,15 +2,15 @@
 
 namespace App\Presenters;
 
-use App\Transformers\LanguagesTransformer;
+use App\Transformers\ZonasTransformer;
 use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
- * Class LanguagesPresenter
+ * Class ZonasPresenter
  *
  * @package namespace App\Presenters;
  */
-class LanguagesPresenter extends FractalPresenter
+class ZonasPresenter extends FractalPresenter
 {
     /**
      * Transformer
@@ -19,6 +19,6 @@ class LanguagesPresenter extends FractalPresenter
      */
     public function getTransformer()
     {
-        return new LanguagesTransformer();
+        return new ZonasTransformer();
     }
 }

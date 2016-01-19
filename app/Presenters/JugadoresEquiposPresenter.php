@@ -2,15 +2,15 @@
 
 namespace App\Presenters;
 
-use App\Transformers\ExpertiseAreaTransformer;
+use App\Transformers\JugadoresEquiposTransformer;
 use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
- * Class ExpertiseAreaPresenter
+ * Class JugadoresEquiposPresenter
  *
  * @package namespace App\Presenters;
  */
-class ExpertiseAreaPresenter extends FractalPresenter
+class JugadoresEquiposPresenter extends FractalPresenter
 {
     /**
      * Transformer
@@ -19,6 +19,6 @@ class ExpertiseAreaPresenter extends FractalPresenter
      */
     public function getTransformer()
     {
-        return new ExpertiseAreaTransformer();
+        return new JugadoresEquiposTransformer();
     }
 }

@@ -21,7 +21,15 @@ class EquiposTransformer extends TransformerAbstract
     public function transform(Equipos $model)
     {
         return [
-            'id'         => (int) $model->id,
+            'id'         => (int) $model->id_equipo,
+            'equipo'         => $model->equipo,
+            'cancha'         => $model->cancha,
+            'camiseta'         => $model->camiseta,
+            'camiseta1'         => $model->camiseta1,
+            'pantaloneta'         => $model->pantaloneta1,
+            'cancha'         => $model->cancha,
+            'ciudad' => $model->ciudad()->get(),
+            'zona' => $model->zona()->get(),
 
             /* place your other model properties here */
 

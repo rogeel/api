@@ -12,8 +12,12 @@ class JugadoresEquipos extends Model implements Transformable
 
     protected $table = 'jugadores_equipos';
 
-	protected $primaryKey = array('id_jugador', 'id_equipo');
+    public $timestamps = false;
 
-    protected $fillable = [];
+	
+
+    protected $fillable = [
+        'id_jugador', 'id_equipo', 'capitan', 'titular', 'id_posicion'
+    ];
 
 }

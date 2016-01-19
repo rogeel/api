@@ -28,6 +28,9 @@ Route::get('/', function () {
 
 Route::resource('registration', 'RegistrationController', ['only' => ['store']]);
 Route::resource('authentication', 'AuthenticateController', ['only' => ['store']]);
+Route::resource('posiciones', 'PosicionesController', ['only' => ['index']]);
+Route::resource('zonas', 'ZonasController', ['only' => ['index']]);
+Route::resource('ciudades', 'CiudadesController', ['only' => ['index']]);
 Route::group([
     'middleware' => [
       //'jwt.refresh',

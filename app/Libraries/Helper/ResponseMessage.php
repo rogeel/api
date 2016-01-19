@@ -73,10 +73,10 @@ class ResponseMessage {
 
 	}
 
-//====================================================== Product Message ===================================================================
+//====================================================== Teams Message ===================================================================
 
-	public static function productExist() {
-		return ResponseMessage::returnJson(Lang::get('SystemMessages.PRODUCT_EXIST'), '', 'PRODUCT_EXIST', StatusCode::BAD_REQUEST);
+	public static function notAllowedTeams() {
+		return ResponseMessage::returnJson(Lang::get('SystemMessages.NOT_ALLOWED_MORE_TEAMS'), '', 'NOT_ALLOWED_MORE_TEAMS', StatusCode::BAD_REQUEST);
 	}
 
 	public static function productNameRequired() {
