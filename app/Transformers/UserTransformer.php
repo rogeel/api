@@ -38,7 +38,8 @@ class UserTransformer extends TransformerAbstract
             'tecnica' => $model->tecnica,
             'ataque' => $model->ataque,
             'movil' => $model->movil,
-            'app' =>$model->app
+            'app' =>$model->app,
+            'equipos' =>$model->equipos()->get()
 
 
         ];

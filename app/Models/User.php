@@ -61,6 +61,10 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
       return $this->BelongsTo('App\Models\Zonas', 'zona', 'id_zona');
     }
 
+    public function equipos(){
+      return $this->belongsToMany('App\Models\Equipos', 'jugadores_equipos', 'id_jugador', 'id_equipo');
+    }
+
 
   /**
    * Returns the complete name of the user

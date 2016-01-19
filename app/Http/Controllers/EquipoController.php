@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepository;
-use App\Services\TransactionalMailer;
+use App\Repositories\EquiposRepository;
+use App\Repositories\JugadoresEquiposRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Libraries\Helper\ResponseMessage as ResponseMessage;
 
-class JugadorController extends Controller
+class EquipoController extends Controller
 {
     //
 
     protected $repository;
 
 
-    public function __construct(UserRepository $repository){
-      $this->repository = $repository;
+    public function __construct(EquiposRepository $equiposRepository,JugadoresEquiposRepository $JugadoresEquiposRepository ){
+      $this->equiposRepository = $equiposRepository;
+      $this->JugadoresEquiposRepository = $JugadoresEquiposRepository;
     }
 
 
@@ -35,7 +36,7 @@ class JugadorController extends Controller
      * @return void
      */
     public function store(Request $request) {
-     
+        return response()->json($this->equiposRepository->all());
     }
 
     /**

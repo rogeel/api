@@ -15,8 +15,8 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
       $this->app->bind('App\Repositories\UserRepository', 'App\Repositories\UserRepositoryEloquent');
-      $this->app->bind('App\Repositories\ExpertiseAreasRepository', 'App\Repositories\ExpertiseAreasRepositoryEloquent');
-      $this->app->bind('App\Repositories\ProfileRepository', 'App\Repositories\ProfileRepositoryEloquent');
+      $this->app->bind('App\Repositories\Equipos', 'App\Repositories\EquiposRepositoryEloquent');
+      $this->app->bind('App\Repositories\JugadoresEquiposRepository', 'App\Repositories\JugadoresEquiposRepositoryEloquent');
       $this->app->bind('App\Repositories\ExpertiseTopicRepository', 'App\Repositories\ExpertiseTopicRepositoryEloquent');
       $this->app->bind('App\Repositories\CountryRepository', 'App\Repositories\CountryRepositoryEloquent');
       $this->app->bind('App\Repositories\AddressRepository', 'App\Repositories\AddressRepositoryEloquent');

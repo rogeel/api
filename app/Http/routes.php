@@ -35,7 +35,8 @@ Route::group([
       //'permissions'
     ]], function(){
 
-    Route::resource('jugadores', 'JugadoresController', ['only' => ['show','update']]);
+    Route::resource('jugadores', 'JugadorController', ['only' => ['show','update']]);
+    Route::resource('equipos', 'EquiposController');
    
     
 
