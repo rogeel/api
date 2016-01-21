@@ -27,6 +27,7 @@ class JugadorController extends Controller
      */
     public function index()
     {
+        return response()->json($this->repository->all());     
       
     }
 
@@ -47,17 +48,10 @@ class JugadorController extends Controller
         try {
             \JWTAuth::parseToken();
             $user = \JWTAuth::parseToken()->authenticate();
-           
 
-            if($id == $user->id_jugador){
+            $jugador = $this->repository->parserResult($user)['data'];
+            return response()->json($jugador);        
 
-                $jugador = $this->repository->parserResult($user)['data'];
-                return response()->json($jugador);        
-            }else{
-                return ResponseMessage::invalidPermission();
-            }
-            
-           
         } catch (\Exception $e) {
             
         }
