@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\CiudadesRepository;
-use App\Models\Ciudades;
+use App\Repositories\CamposRepository;
+use App\Models\Campos;
 
 /**
- * Class CiudadesRepositoryEloquent
+ * Class CamposRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepository
+class CamposRepositoryEloquent extends BaseRepository implements CamposRepository
 {
     /**
      * Specify Model class name
@@ -20,7 +20,7 @@ class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepos
      */
     public function model()
     {
-        return Ciudades::class;
+        return Campos::class;
     }
 
     /**
@@ -29,10 +29,5 @@ class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepos
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function presenter()
-    {
-        return "App\\Presenters\\CiudadesPresenter";
     }
 }

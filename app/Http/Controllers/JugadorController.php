@@ -45,16 +45,7 @@ class JugadorController extends Controller
      */
     public function show($id){
 
-        try {
-            \JWTAuth::parseToken();
-            $user = \JWTAuth::parseToken()->authenticate();
-
-            $jugador = $this->repository->parserResult($user)['data'];
-            return response()->json($jugador);        
-
-        } catch (\Exception $e) {
-            
-        }
+        return response()->json($this->repository->find($id));
 
     }
 

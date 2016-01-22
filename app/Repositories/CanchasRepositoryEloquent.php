@@ -4,14 +4,14 @@ namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\CiudadesRepository;
-use App\Models\Ciudades;
+use App\Repositories\CanchasRepository;
+use App\Models\Canchas;
 
 /**
- * Class CiudadesRepositoryEloquent
+ * Class CanchasRepositoryEloquent
  * @package namespace App\Repositories;
  */
-class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepository
+class CanchasRepositoryEloquent extends BaseRepository implements CanchasRepository
 {
     /**
      * Specify Model class name
@@ -20,7 +20,7 @@ class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepos
      */
     public function model()
     {
-        return Ciudades::class;
+        return Canchas::class;
     }
 
     /**
@@ -33,6 +33,11 @@ class CiudadesRepositoryEloquent extends BaseRepository implements CiudadesRepos
 
     public function presenter()
     {
-        return "App\\Presenters\\CiudadesPresenter";
+        return "App\\Presenters\\CanchasPresenter";
+    }
+
+    public function searchData($data){
+
+
     }
 }

@@ -85,23 +85,7 @@ class EquiposController extends Controller
      */
     public function show($id){
 
-        try {
-            \JWTAuth::parseToken();
-            $user = \JWTAuth::parseToken()->authenticate();
-           
-
-            if($id == $user->id_jugador){
-
-                $jugador = $this->repository->parserResult($user)['data'];
-                return response()->json($jugador);        
-            }else{
-                return ResponseMessage::invalidPermission();
-            }
-            
-           
-        } catch (\Exception $e) {
-            
-        }
+       return response()->json($this->equiposRepository->find($id));
 
     }
 

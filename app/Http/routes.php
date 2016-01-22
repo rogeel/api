@@ -40,6 +40,8 @@ Route::group([
 
     Route::resource('jugadores', 'JugadorController', ['only' => ['show','update','index']]);
     Route::resource('equipos', 'EquiposController');
+    Route::resource('canchas', 'CanchasController', ['only' => ['show','index']]);
+    Route::post('canchas/buscar','CanchasController@buscar');
    
     
 

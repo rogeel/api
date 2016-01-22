@@ -20,6 +20,7 @@ class RepositoriesServiceProvider extends ServiceProvider
       $this->app->bind('App\Repositories\PosicionesRepository', 'App\Repositories\PosicionesRepositoryEloquent');
       $this->app->bind('App\Repositories\ZonasRepository', 'App\Repositories\ZonasRepositoryEloquent');
       $this->app->bind('App\Repositories\CiudadesRepository', 'App\Repositories\CiudadesRepositoryEloquent');
+      $this->app->bind('App\Repositories\CanchasRepository', 'App\Repositories\CanchasRepositoryEloquent');
 
     }
 }
