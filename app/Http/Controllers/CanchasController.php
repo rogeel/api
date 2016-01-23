@@ -67,9 +67,9 @@ class CanchasController extends Controller
     public function buscar(Request $request) {
       
       $conditions = json_decode($request->getContent(), true);
-      $array_conditions = array();
+      $canchas = $this->repository->searchData($conditions);
 
-
+      return response()->json($canchas);
         
     }
 }
