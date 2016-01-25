@@ -90,4 +90,13 @@ class JugadorController extends Controller
     public function destroy($id){
       
     }
+
+    public function buscar(Request $request) {
+      
+      $conditions = json_decode($request->getContent(), true);
+      $jugadores = $this->repository->searchData($conditions);
+
+      return response()->json($jugadores);
+        
+    }
 }

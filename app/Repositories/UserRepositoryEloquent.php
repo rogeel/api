@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use App\Models\User;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Hash;
+Use DB;
 use Prettus\Repository\Events\RepositoryEntityCreated;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
 
@@ -175,5 +176,67 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
       event(new RepositoryEntityUpdated($this, $model));
 
       return $this->parserResult($model);
+    }
+
+    public function searchData($data){
+      $where=array();
+      if( (isset($data['posicion']))){
+        $posicion=intval($data['posicion']);
+        array_push($where,"B.id_posicion = '".$posicion."'");
+      }
+      if( (isset($data['ciudad']))){
+        $ciudad=intval($data['ciudad']);
+        array_push($where,"B.id_ciudad = '".$ciudad."'");
+      }
+      if( (!isset($data['nombre'])))
+          $data["nombre"]= "";
+      if( (isset($data['zona']))){
+          $zona=intval($data['zona']);
+          array_push($where,"B.zona = '".$zona."'");
+      }
+      if( (!isset($data['email'])))
+          $data["email"]= "";
+
+      
+      $nombre=strtolower($data['nombre']);
+      $email=strtolower($data['email']);
+
+      array_push($where,"trim(lower(email)) like '%".$email."%'");
+      array_push($where,"trim(lower(B.nombres)) like '%".$nombre."%'");
+      array_push($where,"trim(lower(B.apellidos)) like '%".$nombre."%'");
+      
+      $where=implode(" and ",$where);
+      //crear el query
+      $query="select
+      B.id_jugador as id,B.nombres,B.apellidos,posicion,ciudad,G.zona,B.f_nacimiento, B.sexo, B.descripcion,B.logros, B.fuerza, B.defensa, B.resistencia, B.tecnica, B.ataque, B.movil,
+      case
+      when (select id_equipo from jugadores_equipos where id_jugador=B.id_jugador limit 1 )>0
+      then (select equipo from jugadores_equipos X,equipos Y where  X.id_equipo=Y.id_equipo and id_jugador=B.id_jugador limit 1 )
+      else 'sin equipo'
+        end as equipo
+      from
+      jugadores B,ciudades E,posiciones F,zonas G
+      where
+      B.id_ciudad=E.id_ciudad
+      and B.id_posicion=F.id_posicion
+      and B.zona=G.id_zona
+      and (".$where.")
+      limit ".$data['por_pagina']."
+      offset ".(($data['pagina']-1)*$data['por_pagina']);
+      $jugadores=DB::select($query);
+      $query="select
+      count(B.id_jugador) as total
+      from
+      jugadores B,ciudades E,posiciones F,zonas G
+      where
+      B.id_ciudad=E.id_ciudad
+      and B.id_posicion=F.id_posicion
+      and B.zona=G.id_zona
+      and (".$where.")";
+      $total=DB::select($query);
+      //$jugadores = $this->parserResult($jugadores);
+      $result = array('jugadores' => $jugadores, "total" => $total);
+      return $result;
+    
     }
 }

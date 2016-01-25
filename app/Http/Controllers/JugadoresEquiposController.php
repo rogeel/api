@@ -9,7 +9,7 @@ use App\Repositories\JugadoresEquiposRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Libraries\Helper\ResponseMessage as ResponseMessage;
 
-class EquiposController extends Controller
+class JugadoresEquiposController extends Controller
 {
     //
 
@@ -28,7 +28,7 @@ class EquiposController extends Controller
      */
     public function index()
     {
-        return response()->json($this->equiposRepository->all());      
+       
     }
 
     /**
@@ -143,21 +143,6 @@ class EquiposController extends Controller
      * @return array
      */
     public function destroy($id){
-      \JWTAuth::parseToken();
-      $user = \JWTAuth::parseToken()->authenticate();
-      $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-            'id_jugador'=>$user->id_jugador,
-            'capitan'=>'t',
-            'id_equipo'=>$id
-        ]);
-        
-        if(count($equiposCapitan)==0){
-             return ResponseMessage::invalidPermission();
-        }
-
-        $equiposCapitan->delete();
-
-
       
     }
 

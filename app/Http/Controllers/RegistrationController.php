@@ -60,9 +60,19 @@ class RegistrationController extends Controller
           $file->move("images/jugadores/",$user->id_jugador.".jpg");
       }else{
           if($user_data['sexo']=='m'){
-              copy("/filesHtml/quepartido1/public/images/jugadores/0.jpg","/filesHtml/quepartido1/public/images/jugadores/".$user->id_jugador.".jpg");
+            if(getenv('APP_ENV')=="production"){
+                copy("/filesHtml/quepartido1/public/images/jugadores/0.jpg","/filesHtml/quepartido1/public/images/jugadores/".$user->id_jugador.".jpg");
+              }else{
+                copy("/filesHtml/dev/front/public/images/jugadores/0.jpg","/filesHtml/quepartido1/public/images/jugadores/".$user->id_jugador.".jpg");
+
+              }
           }elseif($user_data['sexo']=='f'){
-              copy("/filesHtml/quepartido1/public/images/jugadores/0f.jpg","/filesHtml/quepartido1/public/images/jugadores/".$user->id_jugador.".jpg");
+              if(getenv('APP_ENV')=="production"){
+                copy("/filesHtml/quepartido1/public/images/jugadores/0f.jpg","/filesHtml/quepartido1/public/images/jugadores/".$user->id_jugador.".jpg");
+              }else{
+                copy("/filesHtml/dev/front/public/images/jugadores/0f.jpg","/filesHtml/quepartido1/public/images/jugadores/".$user->id_jugador.".jpg");
+
+              }
           }
       }
       return response()->json($this->usersRepo->parserResult($user));

@@ -11,7 +11,8 @@ class Equipos extends Model implements Transformable
     use TransformableTrait;
 
     protected $table = 'equipos';
-	 protected $primaryKey = "id_equipo";
+	
+    protected $primaryKey = "id_equipo";
 
 	protected $fillable = [
         'equipo', 'cancha', 'camiseta', 'camiseta1', 'pantaloneta', 'pantaloneta1', 'id_ciudad', 'id_zona', 'ranking', 'categoria', 'sexo'
