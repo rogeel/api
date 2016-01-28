@@ -45,7 +45,7 @@ class RegistrationController extends Controller
   public function store(Request $request) {
 
     $user_data = $request->all();
-    $user_data['confirmation_code'] = str_random(45);
+    $user_data['confirmed'] = 1;
     $user = NULL;
     try{
       $this->usersRepo->skippresenter();

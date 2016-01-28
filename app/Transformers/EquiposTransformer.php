@@ -32,6 +32,7 @@ class EquiposTransformer extends TransformerAbstract
             'pantaloneta1'         => $model->pantaloneta1,
             'ciudad' => $model->ciudad()->get(),
             'zona' => $model->zona()->get(),
+            'jugadores' =>$model->jugadores()->get(),
 
             /* place your other model properties here */
 

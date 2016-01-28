@@ -36,51 +36,27 @@ class JugadoresEquiposController extends Controller
      * @return void
      */
     public function store(Request $request) {
-        $equipo_data = $request->all();
+        $input_data = json_decode($request->getContent(), true);
         \JWTAuth::parseToken();
         $user = \JWTAuth::parseToken()->authenticate();
-        $equipo = NULL;
-        $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-            'id_jugador'=>$user->id_jugador,
-            'capitan'=>'t'
-        ]);
-        if(count($equiposCapitan)>0){
-             return ResponseMessage::notAllowedTeams();
-        }
-        
-        try{
-
-          $equipo = $this->equiposRepository->create($equipo_data);
-          $arrayEquipoJugador = array('id_jugador' => $user->id_jugador,'id_equipo'=>$equipo["data"]["id"],'id_posicion'=>$user->id_posicion,'capitan'=>'t' , 'titular' => 't');
-          $this->JugadoresEquiposRepository->create($arrayEquipoJugador);
-
-          $file = $request->file("foto");
-          if(!empty($file)){
-                $file->move("images/jugadores/",$equipo["data"]["id"].".jpg");
-          }else{
-
-              if(getenv('APP_ENV')=="production"){
-                copy("/filesHtml/quepartido1/public/images/equipos/0.jpg","/filesHtml/quepartido1/public/images/equipos/".$equipo["data"]["id"].".jpg");
-
-              }else{
-                copy("/filesHtml/dev/front/public/images/equipos/0.jpg","/filesHtml/dev/front/public/images/equipos/".$equipo["data"]["id"].".jpg");
-              }
-
-            
-          }
-
-         return response()->json($equipo);
+        $arrayEquipoJugador = array('id_jugador' => $user->id_jugador,'id_equipo'=>$input_data["id_equipo"],'id_posicion'=>$user->id_posicion,'capitan'=>'f' , 'titular' => 't');
+        try {
+          $result = $this->JugadoresEquiposRepository->create($arrayEquipoJugador);
+          $equipo = $this->equiposRepository->find($input_data["id_equipo"]);
+          return response()->json($equipo);
 
         }catch (\Exception $e) {
           if ($e instanceof ValidatorException) {
             return response()->json($e->toArray(), 400);
 
           } else {
-            if ($user instanceof \App\Models\Equipos) $equipo->forceDelete();
+            if ($result instanceof \App\Models\JugadoresEquipos) $result->forceDelete();
             return response()->json($e->getMessage(), 500);
 
           }
         }
+
+        
     }
 
     /**
@@ -100,40 +76,9 @@ class JugadoresEquiposController extends Controller
     public function update(Request $request, $id){
 
       $equipo_data = $request->all();
-        \JWTAuth::parseToken();
-        $user = \JWTAuth::parseToken()->authenticate();
-        $equipo = NULL;
-        $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-            'id_jugador'=>$user->id_jugador,
-            'capitan'=>'t',
-            'id_equipo'=>$id
-        ]);
-        if(count($equiposCapitan)==0){
-             return ResponseMessage::invalidPermission();
-        }
-        
-        try{
-
-          $equipo = $this->equiposRepository->update($equipo_data,$id);
-
-          $file = $request->file("foto");
-          if(!empty($file)){
-                $file->move("images/jugadores/",$equipo["data"]["id"].".jpg");
-          }
-          
-
-         return response()->json($equipo);
-
-        }catch (\Exception $e) {
-          if ($e instanceof ValidatorException) {
-            return response()->json($e->toArray(), 400);
-
-          } else {
-            if ($user instanceof \App\Models\Equipos) $equipo->forceDelete();
-            return response()->json($e->getMessage(), 500);
-
-          }
-        }
+      \JWTAuth::parseToken();
+      $user = \JWTAuth::parseToken()->authenticate();
+      
         
       
     }

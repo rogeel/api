@@ -19,7 +19,7 @@ class Equipos extends Model implements Transformable
     ];
 	
     public function jugadores(){
-      return $this->belongsToMany('App\Models\User', 'jugadores_equipos', 'id_jugador', 'id_equipo');
+      return $this->belongsToMany('App\Models\User', 'jugadores_equipos', 'id_equipo', 'id_jugador');
     }
 
     public function ciudad()
@@ -31,5 +31,7 @@ class Equipos extends Model implements Transformable
     {
       return $this->BelongsTo('App\Models\Zonas', 'id_zona', 'id_zona');
     }
+
+
 
 }

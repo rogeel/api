@@ -44,7 +44,7 @@ Route::group([
     Route::post('canchas/buscar','CanchasController@buscar');
     Route::post('jugadores/buscar','JugadorController@buscar');
     Route::post('equipos/buscar','EquiposController@buscar');
-    Route::resource('jugadores/{id}/equipos', 'JugadoresEquiposController', ['only' => ['update','delete','store']]);
+    Route::resource('jugadoresEquipos', 'JugadoresEquiposController', ['only' => ['update','delete','store']]);
    
     
 
