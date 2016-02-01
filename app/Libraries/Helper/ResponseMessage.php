@@ -61,7 +61,7 @@ class ResponseMessage {
 	}
 
 	public static function invalidPermission() {
-		return ResponseMessage::returnJson('INVALID PERMISSION', '', 'INVALID_PERMISSION', StatusCode::BAD_REQUEST);
+		return ResponseMessage::returnJson('PERMISOS INVALIDOS', '', 'INVALID_PERMISSION', StatusCode::BAD_REQUEST);
 	}
 
 	public static function invalidToken() {
@@ -69,14 +69,18 @@ class ResponseMessage {
 	}
 
 	public static function invalidCredentials() {
-		return ResponseMessage::returnJson(Lang::get('SystemMessages.INVALID_CREDENTIALS'), '', 'INVALID_CREDENTIALS', StatusCode::BAD_REQUEST);
+		return ResponseMessage::returnJson('CREDENCIALES INVALIDAS', '', 'INVALID_CREDENTIALS', StatusCode::BAD_REQUEST);
 
 	}
 
 //====================================================== Teams Message ===================================================================
 
 	public static function notAllowedTeams() {
-		return ResponseMessage::returnJson(Lang::get('SystemMessages.NOT_ALLOWED_MORE_TEAMS'), '', 'NOT_ALLOWED_MORE_TEAMS', StatusCode::BAD_REQUEST);
+		return ResponseMessage::returnJson('NO PUEDE CREAR MAS EQUIPOS', '', 'NOT_ALLOWED_MORE_TEAMS', StatusCode::BAD_REQUEST);
+	}
+
+	public static function notIsCaptain() {
+		return ResponseMessage::returnJson('SOLO LOS CAPITANES PUEDEN HACER CAMBIOS', '', 'NOT_ALLOWED_MORE_TEAMS', StatusCode::BAD_REQUEST);
 	}
 
 	public static function productNameRequired() {

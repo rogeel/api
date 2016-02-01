@@ -6,6 +6,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
+use App\Libraries\Helper\ResponseMessage as ResponseMessage;
 
 class AuthenticateController extends Controller
 {
@@ -36,9 +37,7 @@ class AuthenticateController extends Controller
 
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(
-                    ['error' => 'invalid_credentials'], 401
-                );
+                return ResponseMessage::invalidCredentials();
             }
 
             // Checks Roles

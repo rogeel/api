@@ -41,7 +41,6 @@ class EquiposRepositoryEloquent extends BaseRepository implements EquiposReposit
         'pantaloneta1'  => 'required',
         'id_ciudad'  => 'required|exists:ciudades,id_ciudad',
         'id_zona'  => 'required|exists:zonas,id_zona',
-        'sexo'  => 'required|in:m,f'
       ]
     ];
 

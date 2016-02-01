@@ -74,8 +74,7 @@ class JugadorController extends Controller
                 return response()->json($e->toArray(), 400);
 
             } else {
-                if($editedJugador != NULL && key_exists('id_jugador', $editedJugador))
-                    $this->repository->delete($editedJugador['id_jugador']);
+                
                 return response()->json($e->getMessage(), 500);
 
             }

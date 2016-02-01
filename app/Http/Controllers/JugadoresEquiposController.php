@@ -35,14 +35,17 @@ class JugadoresEquiposController extends Controller
      * Saves a address into the database
      * @return void
      */
-    public function store(Request $request) {
+    public function store( Request $request, $equipoId) {
         $input_data = json_decode($request->getContent(), true);
         \JWTAuth::parseToken();
         $user = \JWTAuth::parseToken()->authenticate();
-        $arrayEquipoJugador = array('id_jugador' => $user->id_jugador,'id_equipo'=>$input_data["id_equipo"],'id_posicion'=>$user->id_posicion,'capitan'=>'f' , 'titular' => 't');
+
+        
+
+        $arrayEquipoJugador = array('id_jugador' => $user->id_jugador,'id_equipo'=>$equipoId,'id_posicion'=>$user->id_posicion,'capitan'=>'f' , 'titular' => 't');
         try {
           $result = $this->JugadoresEquiposRepository->create($arrayEquipoJugador);
-          $equipo = $this->equiposRepository->find($input_data["id_equipo"]);
+          $equipo = $this->equiposRepository->find($equipoId);
           return response()->json($equipo);
 
         }catch (\Exception $e) {
@@ -50,7 +53,7 @@ class JugadoresEquiposController extends Controller
             return response()->json($e->toArray(), 400);
 
           } else {
-            if ($result instanceof \App\Models\JugadoresEquipos) $result->forceDelete();
+     
             return response()->json($e->getMessage(), 500);
 
           }
@@ -65,7 +68,6 @@ class JugadoresEquiposController extends Controller
      */
     public function show($id){
 
-       return response()->json($this->equiposRepository->find($id));
 
     }
 
@@ -73,12 +75,58 @@ class JugadoresEquiposController extends Controller
      * Update a address by id
      * @return array
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $equipoId, $id){
 
       $equipo_data = $request->all();
       \JWTAuth::parseToken();
       $user = \JWTAuth::parseToken()->authenticate();
-      
+
+      $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
+          'id_jugador'=>$user->id_jugador,
+          'capitan'=>'t',
+          'id_equipo'=>$equipoId
+      ]);
+
+
+
+      if(count($equiposCapitan)==0){
+        return ResponseMessage::notIsCaptain();
+      }
+      if(!isset($equipo_data["capitan"])){
+        $equipo_data["capitan"]="s";
+      }
+
+      $arrayEquipoJugador = array('id_jugador' => $id, 'id_equipo'=>$equipoId,'id_posicion'=>$equipo_data["posicion"],'capitan'=>$equipo_data["capitan"] , 'titular' => $equipo_data["titular"]);
+      try {
+
+        $jugadores = \App\Models\JugadoresEquipos::where('id_equipo',$equipoId)->where('id_jugador', $id)
+                      ->update( $arrayEquipoJugador);
+        if($equipo_data["capitan"]=="t" && $id!=$user->id_jugador){
+          $jugadores = \App\Models\JugadoresEquipos::where('id_equipo',$equipoId)->where('id_jugador', $user->id_jugador)
+                      ->update([ 'capitan'=>'s']);
+
+        }
+        //$result = $this->JugadoresEquiposRepository->update($arrayEquipoJugador);
+
+
+        $equipo = $this->equiposRepository->find($equipoId);
+        return response()->json($equipo);
+
+      }catch (\Exception $e) {
+        if ($e instanceof ValidatorException) {
+          return response()->json($e->toArray(), 400);
+
+        } else {
+   
+          return response()->json($e->getMessage(), 500);
+
+        }
+      }
+
+
+
+
+    
         
       
     }
@@ -87,16 +135,35 @@ class JugadoresEquiposController extends Controller
      * Delete a record by id
      * @return array
      */
-    public function destroy($id){
+    public function destroy($equipoId,$id){
+
+      
+      \JWTAuth::parseToken();
+      $user = \JWTAuth::parseToken()->authenticate();
+
+      if($id!=$user->id_jugador){
+
+
+        $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
+            'id_jugador'=>$user->id_jugador,
+            'capitan'=>'t',
+            'id_equipo'=>$equipoId
+        ]);
+
+        if(count($equiposCapitan)==0){
+          return ResponseMessage::notIsCaptain();
+        }
+      }
+
+      $jugadores = \App\Models\JugadoresEquipos::where('id_equipo',$equipoId)->where('id_jugador', $id)->delete();
+
+      
+
+      return response()->json(true);
+
+      
       
     }
 
-    public function buscar(Request $request) {
-      
-      $conditions = json_decode($request->getContent(), true);
-      $equipos = $this->equiposRepository->searchData($conditions);
-
-      return response()->json($equipos);
-        
-    }
+    
 }

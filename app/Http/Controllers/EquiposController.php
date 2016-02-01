@@ -76,7 +76,7 @@ class EquiposController extends Controller
             return response()->json($e->toArray(), 400);
 
           } else {
-            if ($user instanceof \App\Models\Equipos) $equipo->forceDelete();
+ 
             return response()->json($e->getMessage(), 500);
 
           }
@@ -129,7 +129,7 @@ class EquiposController extends Controller
           return response()->json($e->toArray(), 400);
 
         } else {
-          if ($user instanceof \App\Models\Equipos) $equipo->forceDelete();
+    
           return response()->json($e->getMessage(), 500);
 
         }
@@ -154,8 +154,9 @@ class EquiposController extends Controller
         if(count($equiposCapitan)==0){
              return ResponseMessage::invalidPermission();
         }
-
-        $equiposCapitan->delete();
+        $jugadores = \App\Models\JugadoresEquipos::where('id_equipo',$id)->delete();
+        $equipo = $this->equiposRepository->delete($id);
+        response()->json($equipo);
 
 
       

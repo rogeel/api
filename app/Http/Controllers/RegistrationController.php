@@ -82,7 +82,7 @@ class RegistrationController extends Controller
         return response()->json($e->toArray(), 400);
 
       } else {
-        if ($user instanceof \App\Models\User) $user->forceDelete();
+      
         return response()->json($e->getMessage(), 500);
 
       }
