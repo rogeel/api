@@ -47,20 +47,22 @@ class RetosController extends Controller
       } 
       if($retoData['ano']."-".$retoData['mes']."-".$retoData['dia']<date("Y-m-d")){
         return ResponseMessage::dateNotValid();
-      } 
-      
-      
-      $equipo=Equipo::find($_REQUEST['id_equipo']);
-      $retador=Equipo::find($_REQUEST['retador']);
+      }
+
+      $equipo= $this->equiposRepository->find($id);
+      $retador=$this->equiposRepository->find($id);
           
       $tienePartidos=DB::table("partidos_equipos")
       ->join("partidos","partidos_equipos.id_partido","=","partidos.id_partido")
-      ->where("id_equipo","=",$_REQUEST['id_equipo'])
-      ->where("fecha","=",$_POST['ano']."-".$_POST['mes']."-".$_POST['dia'])
-      ->where("horario","=",$_POST['hora'].":".$_POST['minutos'].":00")
+      ->where("id_equipo","=",$retoData['id_equipo'])
+      ->where("fecha","=",$retoData['ano']."-".$retoData['mes']."-".$retoData['dia'])
+      ->where("horario","=",$retoData['hora'].":".$retoData['minutos'].":00")
       ->count();
       
-      if($tienePartidos>0) array_push($error,"No se puede retar a ".$equipo->equipo." tiene partido  programado en el mismo horario.");
+      if($tienePartidos>0){
+        return ResponseMessage::notAllowMatch($equipo["data"]["equipo"]);
+      }
+        
       
       $tengoPartidos=DB::table("partidos_equipos")
       ->join("partidos","partidos_equipos.id_partido","=","partidos.id_partido")
