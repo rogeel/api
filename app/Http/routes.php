@@ -41,6 +41,7 @@ Route::group([
     Route::resource('jugadores', 'JugadorController', ['only' => ['show','update','index']]);
     Route::resource('equipos', 'EquiposController');
     Route::resource('canchas', 'CanchasController', ['only' => ['show','index']]);
+    Route::resource('retos', 'RetosController', ['only' => ['show','index','store']]);
     Route::post('canchas/buscar','CanchasController@buscar');
     Route::post('jugadores/buscar','JugadorController@buscar');
     Route::post('equipos/buscar','EquiposController@buscar');

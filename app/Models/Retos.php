@@ -13,4 +13,16 @@ class Retos extends Model implements Transformable
     protected $fillable = ['id_equipo','id_retador','id_reserva','mensaje','tipo','estado','fecha_registro','fecha','hora','lugar','id_jugador'];
     protected $primaryKey = "id_reto";
 
+    public function equipo(){
+      return $this->hasMany('App\Models\Equipos', 'id_equipo', 'id_equipo');
+    }
+
+    public function retador(){
+      return $this->hasMany('App\Models\Equipos', 'id_equipo', 'id_retador');
+    }
+
+    public function reserva(){
+      return $this->hasMany('App\Models\Reservas', 'id_reserva', 'id_reserva');
+    }
+
 }

@@ -80,7 +80,15 @@ class ResponseMessage {
 	}
 
 	public static function notIsCaptain() {
-		return ResponseMessage::returnJson('SOLO LOS CAPITANES PUEDEN HACER CAMBIOS', '', 'NOT_ALLOWED_MORE_TEAMS', StatusCode::BAD_REQUEST);
+		return ResponseMessage::returnJson('SOLO LOS CAPITANES PUEDEN HACER CAMBIOS', '', 'NOT_IS_CAPTAIN', StatusCode::BAD_REQUEST);
+	}
+
+	public static function dateNotValid() {
+		return ResponseMessage::returnJson('FECHA NO VALIDA', '', 'DATE_NOT_VALID', StatusCode::BAD_REQUEST);
+	}
+
+	public static function hourNotValid() {
+		return ResponseMessage::returnJson('HORA NO VALIDA', '', 'HOUR_NOT_VALID', StatusCode::BAD_REQUEST);
 	}
 
 	public static function productNameRequired() {

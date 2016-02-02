@@ -21,12 +21,18 @@ class RetosTransformer extends TransformerAbstract
     public function transform(Retos $model)
     {
         return [
-            'id'         => (int) $model->id,
-
-            /* place your other model properties here */
-
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
+            'id'         => (int) $model->id_reto,
+            'equipo'    => $model->equipo()->get(),
+            'retador'    => $model->retador()->get(),
+            'reserva'    => $model->reserva()->get(),
+            'mensaje'         => $model->mensaje,
+            'tipo'    => $model->tipo,
+            'estado'    => $model->estado,
+            'fecha_registro'    => $model->fecha_registro,
+            'fecha'    => $model->fecha,
+            'hora'    => $model->hora,
+            'lugar' => $model->lugar
+            
         ];
     }
 }
