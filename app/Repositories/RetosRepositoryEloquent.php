@@ -30,4 +30,9 @@ class RetosRepositoryEloquent extends BaseRepository implements RetosRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function presenter()
+    {
+        return "App\\Presenters\\RetosPresenter";
+    }
 }
