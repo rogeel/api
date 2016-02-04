@@ -6,6 +6,9 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RetosRepository;
 use App\Models\Retos;
+use Prettus\Validator\Contracts\ValidatorInterface;
+use Prettus\Repository\Events\RepositoryEntityCreated;
+use Prettus\Repository\Events\RepositoryEntityUpdated;
 
 /**
  * Class RetosRepositoryEloquent
@@ -26,7 +29,6 @@ class RetosRepositoryEloquent extends BaseRepository implements RetosRepository
         'mensaje'  => 'required',
         'tipo' => 'required',
         'estado' => 'required',
-        'fecha_registro' => 'fecha_registro',
         'fecha' => 'required',
         'hora' => 'required'
       ], ValidatorInterface::RULE_UPDATE => [
@@ -36,7 +38,6 @@ class RetosRepositoryEloquent extends BaseRepository implements RetosRepository
         'mensaje'  => 'required',
         'tipo' => 'required',
         'estado' => 'required',
-        'fecha_registro' => 'fecha_registro',
         'fecha' => 'required',
         'hora' => 'required'
       ]

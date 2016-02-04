@@ -41,19 +41,18 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         'zona' => 'required|exists:zonas,id_zona',
         'movil' => 'required'
       ], ValidatorInterface::RULE_UPDATE => [
-        'nombres' => 'required|max:50',
-        'apellidos'  => 'required|max:50',
-        'email' => 'required|email|unique:jugadores,email,NULL,id_jugador',
+        'nombres' => 'max:50',
+        'apellidos'  => 'max:50',
+        'email' => 'email|unique:jugadores,email,NULL,id_jugador',
         'password' => [
           'min:8',
           'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'
         ],
-        'id_posicion' => 'required|exists:posiciones,id_posicion',
-        'id_ciudad' => 'required|exists:ciudades,id_ciudad',
-        'f_nacimiento' => 'required|date',
-        'sexo' => 'required|in:m,f',
-        'zona' => 'required|exists:zonas,id_zona',
-        'movil' => 'required'
+        'id_posicion' => 'exists:posiciones,id_posicion',
+        'id_ciudad' => 'exists:ciudades,id_ciudad',
+        'f_nacimiento' => 'date',
+        'sexo' => 'in:m,f',
+        'zona' => 'exists:zonas,id_zona'
       ]
     ];
 

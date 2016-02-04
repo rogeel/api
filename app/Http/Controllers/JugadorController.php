@@ -63,6 +63,10 @@ class JugadorController extends Controller
 
             if($id == $user->id_jugador){
                 $editedJugador= $this->repository->update( $jugador_data, $id);
+                $file = $request->file("foto");
+                if(!empty($file)){
+                    $file->move("images/jugadores/",$user->id_jugador.".jpg");
+                }
                 return response()->json($editedJugador);
                 
             }else{

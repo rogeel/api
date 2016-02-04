@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\RetosRepository;
+use App\Repositories\EquiposRepository;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Libraries\Helper\ResponseMessage as ResponseMessage;
 
@@ -15,8 +16,9 @@ class RetosController extends Controller
     protected $repository;
 
 
-    public function __construct(RetosRepository $retosRepository){
+    public function __construct(RetosRepository $retosRepository, EquiposRepository $equiposRepository){
       $this->repository = $retosRepository;
+      $this->equiposRepository = $equiposRepository;
       
     }
 
@@ -35,62 +37,67 @@ class RetosController extends Controller
      * @return void
      */
     public function store( Request $request) {
-      $retoData = $request->all();
-      $error=array();
-      if($retoData["dia"]<10 && strlen($retoData['dia'])==1) $retoData['dia']="0".$retoData['dia'];
-      //if(empty($_POST['mensaje'])) array_push($error,"Ingrese un mensaje.");
-      if(!checkdate($retoData['mes'],$retoData['dia'],$retoData['ano'])){
-        return ResponseMessage::dateNotValid();
-      } 
-      if($retoData['ano']."-".$retoData['mes']."-".$retoData['dia']==date("Y-m-d") && $retoData['hora']<=date("H")){
-        return ResponseMessage::hourNotValid();
-      } 
-      if($retoData['ano']."-".$retoData['mes']."-".$retoData['dia']<date("Y-m-d")){
-        return ResponseMessage::dateNotValid();
-      }
-
-      $equipo= $this->equiposRepository->find($id);
-      $retador=$this->equiposRepository->find($id);
-          
-      $tienePartidos=DB::table("partidos_equipos")
-      ->join("partidos","partidos_equipos.id_partido","=","partidos.id_partido")
-      ->where("id_equipo","=",$retoData['id_equipo'])
-      ->where("fecha","=",$retoData['ano']."-".$retoData['mes']."-".$retoData['dia'])
-      ->where("horario","=",$retoData['hora'].":".$retoData['minutos'].":00")
-      ->count();
-      
-      if($tienePartidos>0){
-        return ResponseMessage::notAllowMatch($equipo["data"]["equipo"]);
-      }
+      $retoData =  $request->all();
+      try{
         
-      
-      $tengoPartidos=DB::table("partidos_equipos")
-      ->join("partidos","partidos_equipos.id_partido","=","partidos.id_partido")
-      ->where("id_equipo","=",$retador->id_equipo)
-      ->where("fecha","=",$_POST['ano']."-".$_POST['mes']."-".$_POST['dia'])
-      ->where("horario","=",$_POST['hora'].":".$_POST['minutos'].":00")
-      ->count();
-      
-      if($tengoPartidos>0) array_push($error,"No puedes retar tienes partido programado en el mismo horario.");
-      
-      if(empty($error)){
-          if(Auth::check()) $usuario=Auth::user(); else $usuario="";
-          //consultar capita  n del equipo retado
+        //if(empty($_POST['mensaje'])) array_push($error,"Ingrese un mensaje.");
+        if(!checkdate($retoData['mes'],$retoData['dia'],$retoData['ano'])){
+          return ResponseMessage::dateNotValid();
+        } 
+        if($retoData['ano']."-".$retoData['mes']."-".$retoData['dia']==date("Y-m-d") && $retoData['hora']<=date("H")){
+          return ResponseMessage::hourNotValid();
+        } 
+        if($retoData['ano']."-".$retoData['mes']."-".$retoData['dia']<date("Y-m-d")){
+          return ResponseMessage::dateNotValid();
+        }
+
+        $equipo= $this->equiposRepository->find($retoData['id_equipo']);
+        $retador=$this->equiposRepository->find($retoData['id_retador']);
+            
+        $tienePartidos=DB::table("partidos_equipos")
+        ->join("partidos","partidos_equipos.id_partido","=","partidos.id_partido")
+        ->where("id_equipo","=",$retoData['id_equipo'])
+        ->where("fecha","=",$retoData['ano']."-".$retoData['mes']."-".$retoData['dia'])
+        ->where("horario","=",$retoData['hora'].":".$retoData['minutos'].":00")
+        ->count();
+        
+        if($tienePartidos>0){
+          return ResponseMessage::teamNotAvailable($equipo["data"]["equipo"]);
+        }
+          
+        
+        $tengoPartidos=DB::table("partidos_equipos")
+        ->join("partidos","partidos_equipos.id_partido","=","partidos.id_partido")
+        ->where("id_equipo","=",$retador->id_equipo)
+        ->where("fecha","=",$retoData['ano']."-".$retoData['mes']."-".$retoData['dia'])
+        ->where("horario","=",$retoData['hora'].":".$retoData['minutos'].":00")
+        ->count();
+        
+        if($tengoPartidos>0){
+          return ResponseMessage::notAvailable();
+
+        }
+
+        \JWTAuth::parseToken();
+        $user = \JWTAuth::parseToken()->authenticate(); 
+        
+        
+            
+            //consultar capita  n del equipo retado
           $capitanretado=DB::table('jugadores_equipos')
           ->wherein("capitan",array("t","s"))
-          ->where("id_equipo","=",$_POST['id_equipo'])
+          ->where("id_equipo","=",$retoData['id_equipo'])
           ->join("jugadores","jugadores.id_jugador","=","jugadores_equipos.id_jugador")
           ->get();
-          $reto=new Reto();
-          $reto->id_equipo=$equipo->id_equipo;
-          $reto->id_retador=$retador->id_equipo;
-          $reto->mensaje=$_POST['mensaje'];
-          $reto->tipo=$_POST['tipo'];
-          $reto->fecha=$_POST['ano']."-".$_POST['mes']."-".$_POST['dia'];
-          $reto->hora=$_POST['hora'].":".$_POST['minutos'].":00";
-          $reto->lugar=$_POST['lugar'];
-          $reto->save();
-          foreach($capitanretado as $destinatario){
+
+          $fechaReto=$retoData['ano']."-".$retoData['mes']."-".$retoData['dia'];
+          $horaReto=$retoData['hora'].":".$retoData['minutos'].":00";
+
+
+          $arrayReto = array('id_equipo' => $equipo["data"]["id"],'id_retador' => $retador["data"]["id"], 'mensaje' => $retoData['mensaje'], 'tipo' => $retoData['tipo'], 'fecha' => $fechaReto, 'hora'=> $horaReto, 'lugar'=> $retoData['lugar']);
+
+          $reto = $this->repository-create($arrayReto);
+          /*foreach($capitanretado as $destinatario){
               $datos['destinatario']=$destinatario;
               $datos['equipo']=$equipo;
               $datos['retador']=$retador;
@@ -153,16 +160,21 @@ class RetosController extends Controller
               Mail::send('mails.reserva', $datos, function($message) use ($usuario){
                   $message->to($usuario->email, $usuario->nombres)->subject('Confirmacion de reserva');
               }); 
-          } 
-          $redirect="equipos/perfil?id_equipo=".$retador->id_equipo;
-          return View::make('include.jscript')->with(array("redirect"=>$redirect,"alert"=>"Se ha enviado un comunicado al capitan este atento a su respuesta."));
-     }else{
-       $alert="";
-         foreach($error as $key=>$val){
-           $alert.=$val."\\n";    
-       }
-         return View::make('include.jscript')->with(array("alert"=>$alert));
-     } 
+          }*/ 
+
+      }catch (\Exception $e) {
+        if ($e instanceof ValidatorException) {
+          return response()->json($e->toArray(), 400);
+
+        } else {
+   
+          return response()->json($e->getMessage(), 500);
+
+        }
+      }
+      
+         
+      
 
         
     }

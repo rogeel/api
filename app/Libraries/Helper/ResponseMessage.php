@@ -91,9 +91,15 @@ class ResponseMessage {
 		return ResponseMessage::returnJson('HORA NO VALIDA', '', 'HOUR_NOT_VALID', StatusCode::BAD_REQUEST);
 	}
 
-	public static function notAllowMatch($equipo) {
-		return ResponseMessage::returnJson('No se puede retar a '.$equipo.' tiene partido  programado en el mismo horario', '', 'NOT_ALLOW_MATCH', StatusCode::BAD_REQUEST);
+	public static function teamNotAvailable($equipo) {
+		return ResponseMessage::returnJson('No se puede retar a '.$equipo.' tiene partido  programado en el mismo horario', '', 'TEAM_NOT_AVAILABLE', StatusCode::BAD_REQUEST);
 	}
+
+	public static function notAvailable() {
+		return ResponseMessage::returnJson('No puedes retar tienes partido programado en el mismo horario', '', 'NOT_AVAILABLE', StatusCode::BAD_REQUEST);
+	}
+
+	
 
 	public static function productNameRequired() {
 		return ResponseMessage::returnJson(Lang::get('SystemMessages.PRODUCT_NAME_REQUIRED'), '', 'PRODUCT_NAME_REQUIRED', StatusCode::BAD_REQUEST);
