@@ -14,15 +14,15 @@ class Retos extends Model implements Transformable
     protected $primaryKey = "id_reto";
 
     public function equipo(){
-      return $this->hasMany('App\Models\Equipos', 'id_equipo', 'id_equipo');
+      return $this->hasOne('App\Models\Equipos', 'id_equipo', 'id_equipo');
     }
 
     public function retador(){
-      return $this->hasMany('App\Models\Equipos', 'id_equipo', 'id_retador');
+      return $this->hasOne('App\Models\Equipos', 'id_equipo', 'id_retador');
     }
 
     public function reserva(){
-      return $this->hasMany('App\Models\Reservas', 'id_reserva', 'id_reserva');
+      return $this->hasOne('App\Models\Reservas', 'id_reserva', 'id_reserva');
     }
 
 }

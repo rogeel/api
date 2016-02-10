@@ -21,7 +21,13 @@ class AlertasTransformer extends TransformerAbstract
     public function transform(Alertas $model)
     {
         return [
-            'id'         => (int) $model->id,
+            'id'         => (int) $model->id_alerta,
+            'jugador'    => $model->jugador()->get(),
+            'estado'     => $model->estado,
+            'id_tipo_alerta'     => (int)$model->id_tipo_alerta,
+            'alerta' => $model->alerta,
+            'alerta_app' => $model->alerta_app,
+            'id_referencia' => $model->id_referencia,
 
             /* place your other model properties here */
 

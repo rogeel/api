@@ -46,6 +46,7 @@ Route::group([
     Route::post('jugadores/buscar','JugadorController@buscar');
     Route::post('equipos/buscar','EquiposController@buscar');
     Route::resource('equipos/{id}/jugadoresEquipos', 'JugadoresEquiposController', ['only' => ['update','destroy','store']]);
+    Route::resource('alertas', 'AlertasController', ['only' => ['show','update','index']]);
    
     
 

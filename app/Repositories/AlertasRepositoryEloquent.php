@@ -6,6 +6,7 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\AlertasRepository;
 use App\Models\Alertas;
+use Prettus\Validator\Contracts\ValidatorInterface;
 
 /**
  * Class AlertasRepositoryEloquent
@@ -18,6 +19,17 @@ class AlertasRepositoryEloquent extends BaseRepository implements AlertasReposit
      *
      * @return string
      */
+
+    protected $rules = [
+      ValidatorInterface::RULE_CREATE => [
+        'id_jugador' => 'required|exists:jugadores,id_jugador',
+        'estado' => 'required',
+        'id_tipo_alerta' => 'required'
+        
+      ], ValidatorInterface::RULE_UPDATE => [
+        
+      ]
+    ];
     public function model()
     {
         return Alertas::class;
@@ -29,5 +41,10 @@ class AlertasRepositoryEloquent extends BaseRepository implements AlertasReposit
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function presenter()
+    {
+        return "App\\Presenters\\AlertasPresenter";
     }
 }

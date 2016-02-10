@@ -39,7 +39,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         'f_nacimiento' => 'required|date',
         'sexo' => 'required|in:m,f',
         'zona' => 'required|exists:zonas,id_zona',
-        'movil' => 'required'
+        'movil' => 'required',
       ], ValidatorInterface::RULE_UPDATE => [
         'nombres' => 'max:50',
         'apellidos'  => 'max:50',

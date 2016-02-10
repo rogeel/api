@@ -29,7 +29,7 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
     protected $primaryKey = "id_jugador";
 
     protected $fillable = [
-        'nombres', 'apellidos', 'email', 'id_posicion', 'id_ciudad', 'f_nacimiento', 'zona', 'password', 'descripcion', 'logros', 'fuerza', 'defensa', 'resistencia', 'tecnica','ataque','remember_token','token_facebook','movil','confirmed', 'confirmation_code','app'
+        'nombres', 'apellidos', 'email', 'id_posicion', 'id_ciudad', 'f_nacimiento', 'zona', 'password', 'descripcion', 'logros', 'fuerza', 'defensa', 'resistencia', 'tecnica','ataque','remember_token','token_facebook','movil','confirmed', 'confirmation_code','app', 'plataforma'
     ];
 
     /**
