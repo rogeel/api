@@ -45,8 +45,13 @@ Route::group([
     Route::post('canchas/buscar','CanchasController@buscar');
     Route::post('jugadores/buscar','JugadorController@buscar');
     Route::post('equipos/buscar','EquiposController@buscar');
+    Route::resource('noticias','NoticiasController', ['only' => ['show','index']]);
+    Route::post('noticias/buscar','NoticiasController@buscar');
+    Route::resource('eventos','EventosController', ['only' => ['show','index']]);
+    Route::post('eventos/buscar','EventosController@buscar');
     Route::resource('equipos/{id}/jugadoresEquipos', 'JugadoresEquiposController', ['only' => ['update','destroy','store']]);
     Route::resource('alertas', 'AlertasController', ['only' => ['show','update','index']]);
+
    
     
 
