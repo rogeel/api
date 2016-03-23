@@ -137,10 +137,10 @@ class RetosController extends Controller
           $updateArray = array('alerta' => $alerta_text, 'alerta_app' => $alerta_app);
           $alerta = $this->AlertasRepository->update($updateArray, $alerta["data"]["id"]);
           
-        } /* 
+        }  
         //Realizar reserva si viene
-        if(isset($_POST['id_campo'])){
-            $campo=Campo::where("id_campo","=",$_REQUEST['id_campo'])
+        if(isset($retoData['id_campo'])){
+            $campo=Campo::where("id_campo","=",$retoData['id_campo'])
             ->join("canchas","campos.id_cancha","=","canchas.id_cancha")
             ->first();
             $fechado=explode("-",$reto->fecha);
@@ -168,20 +168,14 @@ class RetosController extends Controller
             $reserva=new Reserva();
             $reserva->id_cancha=$campo->id_cancha;
             $reserva->fecha=$reto->fecha;
-            $reserva->hora=$_REQUEST['horareserva'].":00:00";
+            $reserva->hora=$retoData['horareserva'].":00:00";
             $reserva->id_jugador=$usuario->id_jugador;
             $reserva->id_campo=$campo->id_campo;
-            $reserva->total_horas=$_REQUEST['horas'];
+            $reserva->total_horas=$retoData['horas'];
             $reserva->save();
             
-            $datos['campo']=$campo;
-            $datos['fechaformat']=$fechaformat;
-            $datos['hora']=$_REQUEST['horareserva'].":00 a ".($_REQUEST['horareserva']+$_REQUEST['horas']).":00";
-            $datos['cadena']=base64_encode("cancelarReserva||".$campo->id_campo."||".$reto->fecha."||".$_REQUEST['horareserva']);
-            Mail::send('mails.reserva', $datos, function($message) use ($usuario){
-                $message->to($usuario->email, $usuario->nombres)->subject('Confirmacion de reserva');
-            }); 
-        }*/ 
+            
+        }
 
         return response()->json($reto);
 
