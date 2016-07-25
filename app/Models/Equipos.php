@@ -15,7 +15,7 @@ class Equipos extends Model implements Transformable
     protected $primaryKey = "id_equipo";
 
 	protected $fillable = [
-        'equipo', 'cancha', 'camiseta', 'camiseta1', 'pantaloneta', 'pantaloneta1', 'id_ciudad', 'id_zona', 'ranking', 'categoria', 'sexo'
+        'equipo', 'cancha', 'camiseta', 'camiseta_manga', 'medias', 'camiseta1', 'camiseta_manga1', 'medias1', 'pantaloneta', 'pantaloneta1', 'id_ciudad', 'id_zona', 'ranking', 'categoria', 'sexo'
     ];
 	
     public function jugadores(){

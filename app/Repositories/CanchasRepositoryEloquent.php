@@ -52,7 +52,7 @@ class CanchasRepositoryEloquent extends BaseRepository implements CanchasReposit
     $ciudad=strtolower($data['ciudad']);
     $fechaini=$data['fecha'];
     $noJugadores=intval($data['noJugadores']);
-    if(!empty($_REQUEST['fecha'])){
+    if(!empty($data['fecha'])){
         $fecha = strtotime($data['fecha']);
     }else{
         $fecha = strtotime('today');
@@ -78,7 +78,7 @@ class CanchasRepositoryEloquent extends BaseRepository implements CanchasReposit
     //array_push($where,"trim(lower(C.cancha)) like '%".$val."%'");
     array_push($where,"trim(lower(D.ciudad)) like '%".$ciudad."%'");
     array_push($where,"B.jugadores >= ".$noJugadores);
-    array_push($where,"B.jugadores >= ".$noJugadores);
+
 
     //array_push($where,"trim(lower(E.zona)) like '%".$val."%'");
     // if($val=='norte' || $val=='sur' || $val=='centro' || $val=='oriente' || $val=='occidente') array_push($andwhere,"trim(lower(E.zona)) like '%".$val."%'");
@@ -98,6 +98,7 @@ class CanchasRepositoryEloquent extends BaseRepository implements CanchasReposit
     and ($where) ";
     if(!empty($andwhere)) $query.="and ($andwhere)";          
     $query.="GROUP BY B.id_campo limit ".(($data['pagina']-1)*$data['por_pagina']).",".$data['por_pagina'];
+ 
     $canchas=DB::select($query);
     $query="select
     count(B.id_cancha) as total

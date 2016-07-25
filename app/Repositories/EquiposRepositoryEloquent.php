@@ -27,7 +27,11 @@ class EquiposRepositoryEloquent extends BaseRepository implements EquiposReposit
       ValidatorInterface::RULE_CREATE => [
         'equipo' => 'required|unique:equipos',
         'camiseta'  => 'required',
+        'camiseta_manga'  => 'required',
+        'medias'  => 'required',
         'camiseta1'  => 'required',
+        'camiseta_manga1'  => 'required',
+        'medias1'  => 'required',
         'pantaloneta'  => 'required',
         'pantaloneta1'  => 'required',
         'id_ciudad'  => 'required|exists:ciudades,id_ciudad',
@@ -36,7 +40,11 @@ class EquiposRepositoryEloquent extends BaseRepository implements EquiposReposit
       ], ValidatorInterface::RULE_UPDATE => [
         'equipo' => 'required|unique:equipos,equipo,NULL,id_equipo',
         'camiseta'  => 'required',
+        'camiseta_manga'  => 'required',
+        'medias'  => 'required',
         'camiseta1'  => 'required',
+        'camiseta_manga1'  => 'required',
+        'medias1'  => 'required',
         'pantaloneta'  => 'required',
         'pantaloneta1'  => 'required',
         'id_ciudad'  => 'required|exists:ciudades,id_ciudad',
@@ -81,6 +89,14 @@ class EquiposRepositoryEloquent extends BaseRepository implements EquiposReposit
       if( (!isset($data['equipo'])))
           $data["equipo"]= "";
 
+
+      if( (isset($data['sexo']))){
+          $sexo=$data['sexo'];
+          array_push($where,"B.sexo = '".$sexo."'");
+      }
+
+
+      array_push($where,"trim(lower(equipo)) like '%".$data["equipo"]."%'");
       $where=implode(" and ",$where);
       //crear el query
       $query="select

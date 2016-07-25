@@ -62,7 +62,7 @@ class User extends Model  implements AuthenticatableContract, CanResetPasswordCo
     }
 
     public function equipos(){
-      return $this->belongsToMany('App\Models\Equipos', 'jugadores_equipos', 'id_jugador', 'id_equipo');
+      return $this->belongsToMany('App\Models\Equipos', 'jugadores_equipos', 'id_jugador', 'id_equipo')->withPivot('capitan', 'titular', 'id_posicion');;
     }
 
 

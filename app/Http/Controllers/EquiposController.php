@@ -103,11 +103,13 @@ class EquiposController extends Controller
       \JWTAuth::parseToken();
       $user = \JWTAuth::parseToken()->authenticate();
       $equipo = NULL;
-      $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-          'id_jugador'=>$user->id_jugador,
-          'capitan'=>'t',
-          'id_equipo'=>$id
-      ]);
+
+      $equiposCapitan = $this->JugadoresEquiposRepository->scopeQuery(function($query) use($id, $user) {
+          return $query->where('id_jugador',$user->id_jugador)
+          ->whereIn('capitan', ['t', 's'])
+          ->where('id_equipo',$id);
+      })->all();
+      
       if(count($equiposCapitan)==0){
            return ResponseMessage::invalidPermission();
       }
@@ -145,11 +147,11 @@ class EquiposController extends Controller
     public function destroy($id){
       \JWTAuth::parseToken();
       $user = \JWTAuth::parseToken()->authenticate();
-      $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-            'id_jugador'=>$user->id_jugador,
-            'capitan'=>'t',
-            'id_equipo'=>$id
-        ]);
+      $equiposCapitan = $this->JugadoresEquiposRepository->scopeQuery(function($query) use($id, $user) {
+          return $query->where('id_jugador',$user->id_jugador)
+          ->whereIn('capitan', ['t', 's'])
+          ->where('id_equipo',$id);
+      })->all();
         
         if(count($equiposCapitan)==0){
              return ResponseMessage::invalidPermission();

@@ -81,11 +81,11 @@ class JugadoresEquiposController extends Controller
       \JWTAuth::parseToken();
       $user = \JWTAuth::parseToken()->authenticate();
 
-      $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-          'id_jugador'=>$user->id_jugador,
-          'capitan'=>'t',
-          'id_equipo'=>$equipoId
-      ]);
+      $equiposCapitan = $this->JugadoresEquiposRepository->scopeQuery(function($query) use($id, $user) {
+          return $query->where('id_jugador',$user->id_jugador)
+          ->whereIn('capitan', ['t', 's'])
+          ->where('id_equipo',$id);
+      })->all();
 
 
 
@@ -93,7 +93,7 @@ class JugadoresEquiposController extends Controller
         return ResponseMessage::notIsCaptain();
       }
       if(!isset($equipo_data["capitan"])){
-        $equipo_data["capitan"]="s";
+        $equipo_data["capitan"]="f";
       }
 
       $arrayEquipoJugador = array('id_jugador' => $id, 'id_equipo'=>$equipoId,'id_posicion'=>$equipo_data["posicion"],'capitan'=>$equipo_data["capitan"] , 'titular' => $equipo_data["titular"]);
@@ -144,11 +144,11 @@ class JugadoresEquiposController extends Controller
       if($id!=$user->id_jugador){
 
 
-        $equiposCapitan = $this->JugadoresEquiposRepository->findWhere([
-            'id_jugador'=>$user->id_jugador,
-            'capitan'=>'t',
-            'id_equipo'=>$equipoId
-        ]);
+        $equiposCapitan = $this->JugadoresEquiposRepository->scopeQuery(function($query) use($id, $user) {
+          return $query->where('id_jugador',$user->id_jugador)
+          ->whereIn('capitan', ['t', 's'])
+          ->where('id_equipo',$id);
+      })->all();
 
         if(count($equiposCapitan)==0){
           return ResponseMessage::notIsCaptain();

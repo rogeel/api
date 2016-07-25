@@ -27,7 +27,7 @@ class AlertasRepositoryEloquent extends BaseRepository implements AlertasReposit
         'id_tipo_alerta' => 'required'
         
       ], ValidatorInterface::RULE_UPDATE => [
-        
+        'estado' => 'required',
       ]
     ];
     public function model()
